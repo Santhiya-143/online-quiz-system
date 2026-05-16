@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Online Quiz System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="logo">QuizMaster</div>
+        <div class="nav-links" id="nav-links">
+            <!-- Dynamically populated based on auth -->
+        </div>
+    </nav>
+
+    <main class="container" id="app">
+        <!-- Views will be injected here by app.js -->
+    </main>
+
+    <!-- Templates for different views -->
+
+    <!-- Login View -->
+    <template id="view-login">
+        <div class="glass-card auth-card">
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Login to your account</p>
+            <form id="login-form">
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <p class="auth-switch">Don't have an account? <a href="#" onclick="navigate('register'); return false;">Register</a></p>
+            </form>
+            <div id="login-error" class="error-msg"></div>
+        </div>
+    </template>
+
+    <!-- Register View -->
+    <template id="view-register">
+        <div class="glass-card auth-card">
+            <h2>Create Account</h2>
+            <p class="subtitle">Join QuizMaster today</p>
+            <form id="register-form">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="reg-name" required>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="reg-email" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="reg-password" required>
+                </div>
+                <div class="input-group">
+                    <label>Role</label>
+                    <select id="reg-role">
+                        <option value="student">Student</option>
+                        <option value="faculty">Faculty</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+                <p class="auth-switch">Already have an account? <a href="#" onclick="navigate('login'); return false;">Login</a></p>
+            </form>
+            <div id="reg-error" class="error-msg"></div>
+        </div>
+    </template>
+
+    <!-- Admin Dashboard -->
+    <template id="view-admin-dashboard">
+        <div class="dashboard">
+            <header class="dash-header">
+                <h2>Admin Dashboard</h2>
+                <p>Manage users and system statistics.</p>
+            </header>
+            <div class="glass-card">
+                <h3>System Overview</h3>
+                <p>Welcome, <span class="user-name-display"></span>.</p>
+                <!-- In a real app, you'd fetch and display user lists here -->
+                <p class="placeholder-text">Admin capabilities are initialized. User management API needs to be connected to the UI.</p>
+            </div>
+        </div>
+    </template>
+
+    <!-- Faculty Dashboard -->
+    <template id="view-faculty-dashboard">
+        <div class="dashboard">
+            <header class="dash-header">
+                <h2>Faculty Dashboard</h2>
+                <button class="btn btn-primary" onclick="showCreateQuizModal()">+ Create Quiz</button>
+            </header>
+            
+            <div class="dashboard-grid">
+                <div class="glass-card">
+                    <h3>My Subjects</h3>
+                    <form id="create-subject-form" class="inline-form">
+                        <input type="text" id="subj-name" placeholder="Subject Name" required>
+                        <input type="text" id="subj-code" placeholder="Code (e.g. CS101)" required>
+                        <button type="submit" class="btn btn-secondary">Add</button>
+                    </form>
+                    <ul id="faculty-subjects-list" class="list-group"></ul>
+                </div>
+                <div class="glass-card">
+                    <h3>My Quizzes</h3>
+                    <ul id="faculty-quizzes-list" class="list-group"></ul>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Student Dashboard -->
+    <template id="view-student-dashboard">
+        <div class="dashboard">
+            <header class="dash-header">
+                <h2>Student Dashboard</h2>
+                <p>Welcome back, <span class="user-name-display"></span>.</p>
+            </header>
+            
+            <div class="dashboard-grid">
+                <div class="glass-card">
+                    <h3>Available Quizzes</h3>
+                    <div id="available-quizzes-list" class="quiz-grid"></div>
+                </div>
+                <div class="glass-card">
+                    <h3>My Results</h3>
+                    <ul id="student-results-list" class="list-group"></ul>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Active Quiz View -->
+    <template id="view-active-quiz">
+        <div class="glass-card quiz-taker">
+            <div class="quiz-header">
+                <h2 id="aq-title">Loading Quiz...</h2>
+                <div class="timer" id="aq-timer">--:--</div>
+            </div>
+            <div id="aq-questions-container"></div>
+            <button id="aq-submit-btn" class="btn btn-primary" style="display: none;" onclick="submitQuiz()">Submit Quiz</button>
+        </div>
+    </template>
+
+    <!-- Quiz Result View -->
+    <template id="view-quiz-result">
+        <div class="glass-card result-card center-content">
+            <h2>Quiz Complete!</h2>
+            <div class="score-circle">
+                <span id="qr-percentage">0%</span>
+            </div>
+            <p>You scored <strong id="qr-score">0</strong> out of <strong id="qr-total">0</strong> marks.</p>
+            <button class="btn btn-primary" onclick="navigate('student-dashboard')">Back to Dashboard</button>
+        </div>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+</html>
